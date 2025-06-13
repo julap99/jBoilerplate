@@ -2,37 +2,37 @@ interface User {
   id: string;
   email: string;
   fullname: string;
-  user_type: "superadmin" | "admin" | "manager" | "user";
+  user_type: "superadmin" | "studio" | "photographer" | "affiliate";
   avatar: string;
 }
 
 export const exampleUsers: User[] = [
   {
-    id: "superadmin_1",
+    id: "superadmin",
     email: "superadmin@example.com",
-    fullname: "Superadmin User",
+    fullname: "Super Admin",
     user_type: "superadmin",
     avatar: "https://i.pravatar.cc/300?img=1",
   },
   {
-    id: "admin_1",
-    email: "admin@example.com",
-    fullname: "Admin User",
-    user_type: "admin",
+    id: "studio",
+    email: "studio@example.com",
+    fullname: "Studio",
+    user_type: "studio",
     avatar: "https://i.pravatar.cc/300?img=2",
   },
   {
-    id: "manager_1",
-    email: "manager@example.com",
-    fullname: "Manager User",
-    user_type: "manager",
+    id: "photographer",
+    email: "photographer@example.com",
+    fullname: "Photographer",
+    user_type: "photographer",
     avatar: "https://i.pravatar.cc/300?img=4",
   },
   {
-    id: "user_1",
-    email: "user@example.com",
-    fullname: "Regular User",
-    user_type: "user",
+    id: "affiliate",
+    email: "affiliate@example.com",
+    fullname: "Affiliate",
+    user_type: "affiliate",
     avatar: "https://i.pravatar.cc/300?img=3",
   },
 ];
@@ -46,6 +46,6 @@ export const getUserByRole = (role: User["user_type"]): User | undefined => {
 export const getMockCredentials = (user: User) => {
   return {
     email: user.email,
-    password: "password123", // Example password, in real app would be hashed
+    password: "abc123", // Example password, in real app would be hashed
   };
 };

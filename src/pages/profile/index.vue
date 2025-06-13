@@ -1,7 +1,5 @@
 <template>
   <div class="space-y-6">
-    <PageHeader :breadcrumb="breadcrumbs" />
-
     <!-- Page Header -->
     <div>
       <h1 class="text-2xl sm:text-3xl font-bold text-foreground">My Profile</h1>

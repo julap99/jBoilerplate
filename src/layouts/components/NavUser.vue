@@ -160,10 +160,10 @@ onUnmounted(() => {
             </div>
             <DropdownMenuShortcut>⇧P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem @click="router.push('/setting')" class="flex items-center justify-between py-1.5">
+          <DropdownMenuItem @click="router.push('/advanced-settings')" class="flex items-center justify-between py-1.5">
             <div class="flex items-center">
               <Settings class="mr-2 h-4 w-4" />
-              <span>Settings</span>
+              <span>Advanced Settings</span>
             </div>
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>

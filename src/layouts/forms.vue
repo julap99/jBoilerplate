@@ -6,8 +6,6 @@ import {
   SidebarHeader,
   SidebarFooter,
   SidebarProvider,
-  SidebarInset,
-  SidebarRail,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -26,7 +24,6 @@ import {
   ScrollTextIcon,
   MessageCircleIcon,
   HomeIcon,
-  InboxIcon,
   SunIcon,
   MoonIcon,
 } from "lucide-vue-next";
@@ -54,32 +51,42 @@ const navigation = ref([
       {
         title: "Overview",
         icon: HomeIcon,
-        url: `/manager/documents/${formId.value}`,
+        url: `/studio/forms/${formId.value}`,
       },
       {
         title: "Title & Description",
         icon: FileTextIcon,
-        url: `/manager/documents/${formId.value}/title`,
+        url: `/studio/forms/${formId.value}/title`,
       },
       {
-        title: "Calendar",
+        title: "Sessions",
         icon: CalendarIcon,
-        url: `/manager/documents/${formId.value}/calendar`,
+        url: `/studio/forms/${formId.value}/sessions`,
       },
       {
         title: "Add-ons",
         icon: PlusIcon,
-        url: `/manager/documents/${formId.value}/addons`,
+        url: `/studio/forms/${formId.value}/addons`,
       },
     ],
   },
   {
     title: "Form Builder",
     items: [
+      // {
+      //   title: "Form Fields",
+      //   icon: EditIcon,
+      //   url: `/studio/forms/${formId.value}/field-builder`,
+      // },
+      // {
+      //   title: "Form Fields 2",
+      //   icon: EditIcon,
+      //   url: `/studio/forms/${formId.value}/field-builder-2`,
+      // },
       {
         title: "Form Fields",
         icon: EditIcon,
-        url: `/manager/documents/${formId.value}/fields`,
+        url: `/studio/forms/${formId.value}/field-builder`,
       },
     ],
   },
@@ -89,12 +96,12 @@ const navigation = ref([
       {
         title: "Terms & Conditions",
         icon: ScrollTextIcon,
-        url: `/manager/documents/${formId.value}/terms`,
+        url: `/studio/forms/${formId.value}/terms-conditions`,
       },
       {
-        title: "Messaging & Redirect",
+        title: "WhatsApp & Redirect",
         icon: MessageCircleIcon,
-        url: `/manager/documents/${formId.value}/messaging`,
+        url: `/studio/forms/${formId.value}/whatsapp`,
       },
     ],
   },
@@ -113,19 +120,17 @@ const isActiveRoute = (url: string) => {
         <!-- Back to Forms Navigation -->
         <div class="p-4">
           <button
-            @click="router.push('/manager/documents')"
+            @click="router.push('/studio/forms')"
             class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-accent px-3 py-2 rounded-md w-full"
           >
             <ChevronLeftIcon class="w-4 h-4" />
-            <span>Back to Documents</span>
+            <span>Back to Forms</span>
           </button>
         </div>
 
         <!-- Form Title -->
         <div class="px-4 pb-4">
-          <h2 class="text-lg font-semibold text-foreground">
-            Document Form
-          </h2>
+          <h2 class="text-lg font-semibold text-foreground">Document Form</h2>
           <p class="text-sm text-muted-foreground">
             Form ID: {{ formId || "new" }}
           </p>
@@ -181,7 +186,7 @@ const isActiveRoute = (url: string) => {
               variant="outline"
               size="sm"
               class="w-full justify-start"
-              @click="router.push(`/manager/documents/${formId}/preview`)"
+              @click="router.push(`/studio/forms/${formId}/preview`)"
             >
               <EyeIcon class="w-4 h-4 mr-2" />
               Preview Form
@@ -189,7 +194,7 @@ const isActiveRoute = (url: string) => {
             <Button
               size="sm"
               class="w-full justify-start"
-              @click="router.push(`/manager/documents/${formId}/publish`)"
+              @click="router.push(`/studio/forms/${formId}/publish`)"
             >
               <ShareIcon class="w-4 h-4 mr-2" />
               Publish Form

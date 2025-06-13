@@ -72,65 +72,65 @@ function navigateTo(path: string) {
       >
         <div class="absolute inset-0 bg-zinc-900">
           <img
-            src="https://images.unsplash.com/photo-1594122230689-45899d9e6f69?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Authentication"
             class="h-full w-full object-cover opacity-30"
           />
         </div>
         <div class="relative z-20 flex items-center text-lg font-medium">
           <img
-            src="@/assets/logo/logo400.jpg"
+            src="@/assets/logo/pcrm-logo-1.png"
             alt="logo"
-            class="h-16 w-auto rounded-lg"
+            class="h-20 w-auto rounded-lg"
           />
         </div>
         <div class="relative z-20 mt-auto">
           <div class="space-y-2">
-            <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-white">
-              jBoilerplate
+            <h1
+              class="text-3xl md:text-4xl font-bold tracking-tight text-white"
+            >
+              PCRM
             </h1>
-            <p class="text-slate-300">
-              A reusable Vue 3 boilerplate with TypeScript and Shadcn UI
-            </p>
+            <p class="text-slate-300">“Picture-Perfect Management.”</p>
           </div>
         </div>
       </div>
 
       <!-- Right: Auth Content -->
       <div class="py-6 lg:p-8">
-        <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div
+          class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]"
+        >
           <slot />
-          
+
           <!-- Footer with links -->
           <div class="mt-8 text-center text-sm text-muted-foreground">
             <div class="flex justify-center space-x-4">
-              <button 
-                @click="navigateTo('/about')" 
+              <button
+                @click="navigateTo('/about')"
                 class="hover:text-primary transition-colors"
               >
                 About Us
               </button>
               <span class="text-muted-foreground/50">|</span>
-              <button 
-                @click="navigateTo('/privacy-policy')" 
+              <button
+                @click="navigateTo('/privacy-policy')"
                 class="hover:text-primary transition-colors"
               >
                 Privacy
               </button>
               <span class="text-muted-foreground/50">|</span>
-              <button 
-                @click="navigateTo('/terms-of-service')" 
+              <button
+                @click="navigateTo('/terms-of-service')"
                 class="hover:text-primary transition-colors"
               >
                 Terms
               </button>
             </div>
-            <div class="mt-2 text-xs">
-              Made with ❤️ by Infyra Ventures
-            </div>
+            <div class="mt-2 text-xs">Made with ❤️ by Infyra Ventures</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</template> 
+</template>

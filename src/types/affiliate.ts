@@ -15,6 +15,7 @@ export interface Affiliate {
   notes?: string
   referralCode: string
   lastActivity?: Date
+  lastMonthReferrals?: number // Number of referrals in the last 30 days
 }
 
 export interface AffiliateBankDetails {
@@ -76,8 +77,8 @@ export interface UpdateAffiliateRequest {
 export interface PayCommissionRequest {
   commissionIds: string[]
   paymentMethod: 'bank_transfer' | 'ewallet' | 'manual'
-  paymentReference?: string
-  notes?: string
+  paymentReference: string
+  notes: string
 }
 
 export interface AffiliateListResponse {

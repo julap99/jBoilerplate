@@ -28,14 +28,14 @@ function redirectBasedOnAuth() {
       case 'superadmin':
         router.replace('/superadmin/dashboard');
         break;
-      case 'admin':
-        router.replace('/admin/dashboard');
+      case 'studio':
+        router.replace('/studio/home');
         break;
-      case 'manager':
-        router.replace('/manager/home');
+      case 'photographer':
+        router.replace('/photographer/home');
         break;
-      case 'user':
-        router.replace('/user/home');
+      case 'affiliate':
+        router.replace('/affiliate/home');
         break;
       default:
         router.replace('/login');

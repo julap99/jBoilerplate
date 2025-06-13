@@ -37,14 +37,14 @@ function redirectToDashboard() {
     case "superadmin":
       router.replace("/superadmin/home");
       break;
-    case "admin":
-      router.replace("/admin/home");
+    case "studio":
+      router.replace("/studio/home");
       break;
-    case "manager":
-      router.replace("/manager/home");
+    case "photographer":
+      router.replace("/photographer/home");
       break;
-    case "user":
-      router.replace("/user/home");
+    case "affiliate":
+      router.replace("/affiliate/home");
       break;
     default:
       // Stay on login page if role is unknown

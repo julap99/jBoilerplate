@@ -6,11 +6,12 @@ import { prefetchRouteComponents } from "@/composables/useAsyncComponent";
 
 // Define common component loaders for prefetching
 const commonComponentLoaders = {
-  'dashboard': () => import('@/layouts/dashboard.vue'),
-  'admin': () => import('@/pages/admin/dashboard/index.vue'),
-  'user': () => import('@/pages/user/home/index.vue'),
-  'profile': () => import('@/pages/profile/index.vue'),
-  'settings': () => import('@/pages/setting/index.vue'),
+  dashboard: () => import("@/layouts/dashboard.vue"),
+  studio: () => import("@/pages/studio/home/index.vue"),
+  // photographer: () => import("@/pages/photographer/home/index.vue"),
+  // affiliate: () => import("@/pages/affiliate/home/index.vue"),
+  profile: () => import("@/pages/profile/index.vue"),
+  settings: () => import("@/pages/advanced-settings/index.vue"),
 };
 
 const router = createRouter({
@@ -21,38 +22,40 @@ const router = createRouter({
       return savedPosition;
     }
     return { top: 0 };
-  }
+  },
 });
 
 // Navigation guard for authentication and role-based access
 router.beforeEach(async (to, from, next) => {
   // Set document title based on route metadata
   const defaultTitle = "jBoilerplate";
-  document.title = to.meta.title 
-    ? `${to.meta.title} | ${defaultTitle}` 
+  document.title = to.meta.title
+    ? `${to.meta.title} | ${defaultTitle}`
     : defaultTitle;
 
   const authStore = useAuthStore();
   const requiresAuth = to.meta.requiresAuth;
   const allowedRoles = to.meta.roles as string[] | undefined;
-  
-  console.log('Route access:', { 
-    path: to.path, 
-    requiresAuth, 
+
+  console.log("Route access:", {
+    path: to.path,
+    requiresAuth,
     isAuthenticated: authStore.isAuthenticated,
-    userRole: authStore.user?.user_type || 'none' 
+    userRole: authStore.user?.user_type || "none",
   });
-  
+
   // Special case for home route (/) - redirect to login if not authenticated
-  if (to.path === '/' && to.name === 'home') {
+  if (to.path === "/" && to.name === "home") {
     if (!authStore.isAuthenticated) {
       console.log("Redirecting from home to login (not authenticated)");
-      return next('/login');
+      return next("/login");
     } else {
       // If authenticated, redirect to appropriate dashboard based on role
       const userType = authStore.user?.user_type as UserRole;
       let dashboardPath = getDashboardPathByRole(userType);
-      console.log(`Redirecting from home to ${dashboardPath} (authenticated as ${userType})`);
+      console.log(
+        `Redirecting from home to ${dashboardPath} (authenticated as ${userType})`
+      );
       return next(dashboardPath);
     }
   }
@@ -66,13 +69,15 @@ router.beforeEach(async (to, from, next) => {
     ) {
       const userType = authStore.user?.user_type as UserRole;
       const dashboardPath = getDashboardPathByRole(userType);
-      
+
       // Prevent redirect loop by checking if we're already going to the dashboard
       if (to.path === dashboardPath) {
         return next();
       }
-      
-      console.log(`Redirecting authenticated user from ${to.name} to: ${dashboardPath}`);
+
+      console.log(
+        `Redirecting authenticated user from ${to.name} to: ${dashboardPath}`
+      );
       return next(dashboardPath);
     }
     return next();
@@ -80,13 +85,16 @@ router.beforeEach(async (to, from, next) => {
 
   // Handle protected routes
   if (!authStore.isAuthenticated) {
-    console.log("Unauthenticated user trying to access protected route:", to.path);
-    
+    console.log(
+      "Unauthenticated user trying to access protected route:",
+      to.path
+    );
+
     // Prevent redirect loop by checking if we're already going to login
     if (to.name === "login") {
       return next();
     }
-    
+
     // Save the intended destination
     return next({
       name: "login",
@@ -97,8 +105,10 @@ router.beforeEach(async (to, from, next) => {
   // Check role-based access
   if (allowedRoles && authStore.user) {
     if (!allowedRoles.includes(authStore.user.user_type)) {
-      console.log(`User role ${authStore.user.user_type} not authorized for route: ${to.path}`);
-      
+      console.log(
+        `User role ${authStore.user.user_type} not authorized for route: ${to.path}`
+      );
+
       // Redirect to appropriate dashboard instead of 404
       const userType = authStore.user.user_type as UserRole;
       const dashboardPath = getDashboardPathByRole(userType);
@@ -115,26 +125,26 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to) => {
   // Prefetch components based on current route
   prefetchRouteComponents(to.path, commonComponentLoaders);
-  
+
   // Prefetch specific role-based components if authenticated
   const authStore = useAuthStore();
   if (authStore.isAuthenticated && authStore.user) {
     const userType = authStore.user.user_type as UserRole;
-    
+
     // Specific role-based prefetching
-    switch(userType) {
-      case 'admin':
-        prefetchRouteComponents(to.path, {
-          'team': () => import('@/pages/admin/team/index.vue'),
-          'projects': () => import('@/pages/admin/projects/index.vue'),
-          'documents': () => import('@/pages/admin/documents/index.vue'),
-        });
+    switch (userType) {
+      case "studio":
+        // prefetchRouteComponents(to.path, {
+        //   team: () => import("@/pages/studio/team/index.vue"),
+        //   projects: () => import("@/pages/studio/projects/index.vue"),
+        //   documents: () => import("@/pages/studio/documents/index.vue"),
+        // });
         break;
-      case 'user':
-        prefetchRouteComponents(to.path, {
-          'calendar': () => import('@/pages/user/calendar/index.vue'),
-          'help': () => import('@/pages/user/help/index.vue'),
-        });
+      case "photographer":
+        // prefetchRouteComponents(to.path, {
+        //   calendar: () => import("@/pages/photographer/calendar/index.vue"),
+        //   help: () => import("@/pages/photographer/help/index.vue"),
+        // });
         break;
       // Add other roles as needed
     }
@@ -146,12 +156,12 @@ function getDashboardPathByRole(role: UserRole): string {
   switch (role) {
     case "superadmin":
       return "/superadmin/dashboard";
-    case "admin":
-      return "/admin/dashboard";
-    case "manager":
-      return "/manager/home";
-    case "user":
-      return "/user/home";
+    case "studio":
+      return "/studio/dashboard";
+    case "photographer":
+      return "/photographer/dashboard";
+    case "affiliate":
+      return "/affiliate/dashboard";
     default:
       return "/login";
   }

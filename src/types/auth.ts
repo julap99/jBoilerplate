@@ -8,7 +8,7 @@ export interface User {
   updated_at?: string;
 }
 
-export type UserRole = 'superadmin' | 'admin' | 'user';
+export type UserRole = 'superadmin' | 'studio' | 'photographer' | 'affiliate';
 
 export interface LoginCredentials {
   email: string;

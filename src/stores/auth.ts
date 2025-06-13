@@ -3,13 +3,13 @@ import { ref, computed, markRaw } from "vue";
 import { useRouter, Router } from "vue-router";
 import { ofetch } from "ofetch";
 import { exampleUsers, getMockCredentials } from "@/constants/example-users";
-import { 
-  type User, 
-  type LoginCredentials, 
-  type SSOCredentials, 
+import {
+  type User,
+  type LoginCredentials,
+  type SSOCredentials,
   type AuthResponse,
   type CSRFToken,
-  type UserRole
+  type UserRole,
 } from "@/types/auth";
 import { apiPost } from "@/services/api";
 
@@ -17,14 +17,16 @@ const getApiUrl = (): string => {
   if (window.API_URL) {
     return window.API_URL;
   }
-  
+
   const env = process.env.NODE_ENV || "development";
   const environments = {
     development: "http://localhost:3000/api",
     staging: "https://staging-api.example.com",
     production: "https://api.example.com",
   };
-  return environments[env as keyof typeof environments] || environments.development;
+  return (
+    environments[env as keyof typeof environments] || environments.development
+  );
 };
 
 /**
@@ -38,7 +40,7 @@ export const useAuthStore = defineStore("auth", () => {
   try {
     const routerInstance = useRouter();
     // Only mark as raw if it's a valid object
-    if (routerInstance && typeof routerInstance === 'object') {
+    if (routerInstance && typeof routerInstance === "object") {
       router = markRaw(routerInstance);
     }
   } catch (error) {
@@ -58,7 +60,7 @@ export const useAuthStore = defineStore("auth", () => {
   const originalUser = ref<User | null>(null);
 
   const isAuthenticated = computed(() => !!accessToken.value && !!user.value);
-  
+
   // Get router instance safely
   const getRouter = (): Router | null => {
     // If router wasn't available during store initialization, try to get it now
@@ -87,19 +89,37 @@ export const useAuthStore = defineStore("auth", () => {
     // This is a simple implementation. In a real app, you would have
     // a more robust permission system with role-based permissions
     const rolePermissions: Record<UserRole, string[]> = {
-      superadmin: ['all', 'user:read', 'user:write', 'user:delete', 'settings:read', 'settings:write', 'system:read', 'system:write'],
-      admin: ['user:read', 'user:write', 'settings:read', 'settings:write'],
-      manager: ['user:read', 'user:write', 'team:read', 'team:write', 'project:read', 'project:write'],
-      user: ['user:read']
+      superadmin: [
+        "all",
+        "user:read",
+        "user:write",
+        "user:delete",
+        "settings:read",
+        "settings:write",
+        "system:read",
+        "system:write",
+      ],
+      studio: ["user:read", "user:write", "settings:read", "settings:write"],
+      photographer: [
+        "user:read",
+        "user:write",
+        "team:read",
+        "team:write",
+        "project:read",
+        "project:write",
+      ],
+      affiliate: ["user:read"],
     };
-    
+
     // Superadmin has all permissions
-    if (user.value?.user_type === 'superadmin') {
+    if (user.value?.user_type === "superadmin") {
       return true;
     }
-    
+
     // Check if user's role has the requested permission
-    return user.value ? rolePermissions[user.value.user_type].includes(permission) : false;
+    return user.value
+      ? rolePermissions[user.value.user_type].includes(permission)
+      : false;
   };
 
   /**
@@ -113,14 +133,17 @@ export const useAuthStore = defineStore("auth", () => {
         csrfToken.value = storedToken;
         return storedToken;
       }
-      
+
       try {
-        const response = await ofetch<CSRFToken>(`${getApiUrl()}/auth/csrf-token`, {
-          method: "GET",
-          credentials: "include",
-          timeout: 3000, // Add timeout to fail faster
-        });
-        
+        const response = await ofetch<CSRFToken>(
+          `${getApiUrl()}/auth/csrf-token`,
+          {
+            method: "GET",
+            credentials: "include",
+            timeout: 3000, // Add timeout to fail faster
+          }
+        );
+
         csrfToken.value = response.token;
         localStorage.setItem("csrf_token", response.token);
         return response.token;
@@ -147,19 +170,19 @@ export const useAuthStore = defineStore("auth", () => {
     if (storedUser) {
       user.value = JSON.parse(storedUser);
     }
-    
+
     // Try to load tokens
     const storedAccessToken = localStorage.getItem("access_token");
     const storedCSRFToken = localStorage.getItem("csrf_token");
-    
+
     if (storedAccessToken) {
       accessToken.value = storedAccessToken;
     }
-    
+
     if (storedCSRFToken) {
       csrfToken.value = storedCSRFToken;
     }
-    
+
     // If we have tokens but no user, try to fetch user data
     if (accessToken.value && !user.value) {
       try {
@@ -169,16 +192,16 @@ export const useAuthStore = defineStore("auth", () => {
         clearAuthData();
       }
     }
-    
+
     // Fetch a new CSRF token if needed
     if (!csrfToken.value) {
       await fetchCSRFToken();
     }
-    
+
     // Initialize impersonation state
     const isImpersonating = localStorage.getItem("impersonating") === "true";
     const storedOriginalUser = localStorage.getItem("original_user");
-    
+
     if (isImpersonating && storedOriginalUser) {
       impersonating.value = true;
       originalUser.value = JSON.parse(storedOriginalUser);
@@ -222,8 +245,12 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       // For the boilerplate, we're using mock authentication
       // In a real app, you would call the API
-      const matchedUser = exampleUsers.find(u => u.email === credentials.email);
+      const matchedUser = exampleUsers.find(
+        (u) => u.email === credentials.email
+      );
       const mockCreds = matchedUser ? getMockCredentials(matchedUser) : null;
+
+      console.log("matchedUser:", matchedUser);
 
       if (!matchedUser || credentials.password !== mockCreds?.password) {
         throw new Error("Invalid email or password");
@@ -232,7 +259,7 @@ export const useAuthStore = defineStore("auth", () => {
       // Simulate a response from the server
       const data = {
         accessToken: `mock_token_${matchedUser.id}`,
-        user: matchedUser
+        user: matchedUser,
       };
 
       // In a real app, the token would be returned by the API
@@ -267,7 +294,7 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       // Get CSRF token first
       await fetchCSRFToken();
-      
+
       // Call the SSO endpoint
       const data = await ofetch<AuthResponse>(
         `${getApiUrl()}/auth/sso/${credentials.provider}`,
@@ -308,7 +335,7 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       // Get a new CSRF token
       await fetchCSRFToken();
-      
+
       // Call the refresh token endpoint
       const data = await ofetch<{ accessToken: string }>(
         `${getApiUrl()}/auth/refresh-token`,
@@ -360,7 +387,7 @@ export const useAuthStore = defineStore("auth", () => {
     } finally {
       // Clear local state regardless of server response
       clearAuthData();
-      
+
       // Only redirect if router is available
       const routerInstance = getRouter();
       if (routerInstance) {
@@ -376,38 +403,38 @@ export const useAuthStore = defineStore("auth", () => {
     if (!user.value) {
       throw new Error("Cannot impersonate: No authenticated user");
     }
-    
-    if (!hasPermission('user:impersonate')) {
+
+    if (!hasPermission("user:impersonate")) {
       throw new Error("You don't have permission to impersonate users");
     }
-    
+
     try {
       // Store the original user
       originalUser.value = { ...user.value };
-      
+
       // Set impersonation flag
       impersonating.value = true;
-      
+
       // Replace current user with target user
       user.value = targetUser;
-      
+
       // Store the impersonation state
       localStorage.setItem("impersonating", "true");
       localStorage.setItem("original_user", JSON.stringify(originalUser.value));
-      
+
       // In a real app, you would make an API call to start impersonation
       // and the backend would issue a special token
-      
+
       // For our boilerplate, we'll just store the impersonated user
       localStorage.setItem("user", JSON.stringify(user.value));
-      
+
       console.log(`Now impersonating user: ${targetUser.email}`);
     } catch (error) {
       console.error("Failed to impersonate user:", error);
       throw error;
     }
   }
-  
+
   /**
    * Stop impersonating and return to original user
    */
@@ -415,22 +442,22 @@ export const useAuthStore = defineStore("auth", () => {
     if (!impersonating.value || !originalUser.value) {
       return;
     }
-    
+
     try {
       // Restore original user
       user.value = originalUser.value;
-      
+
       // Reset impersonation state
       impersonating.value = false;
       originalUser.value = null;
-      
+
       // Clean up localStorage
       localStorage.removeItem("impersonating");
       localStorage.removeItem("original_user");
       localStorage.setItem("user", JSON.stringify(user.value));
-      
+
       // In a real app, you would make an API call to end impersonation
-      
+
       console.log("Stopped impersonating, returned to original user");
     } catch (error) {
       console.error("Failed to stop impersonating:", error);
@@ -454,11 +481,11 @@ export const useAuthStore = defineStore("auth", () => {
     init,
     refreshAccessToken,
     fetchUserData,
-    
+
     // Impersonation
     impersonating: computed(() => impersonating.value),
     originalUser: computed(() => originalUser.value),
     impersonateUser,
-    stopImpersonating
+    stopImpersonating,
   };
 });

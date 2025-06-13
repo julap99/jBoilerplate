@@ -1,14 +1,19 @@
 <template>
   <div class="flex min-h-svh flex-col items-center justify-center">
-    <div class="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
+    <div
+      class="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center"
+    >
       <div class="text-6xl font-bold text-primary">404</div>
       <h1 class="mt-4 text-3xl font-bold tracking-tight">Page not found</h1>
       <p class="mt-2 text-muted-foreground">
         The page you're looking for doesn't exist or has been moved.
       </p>
-      <Button @click="goToDashboard" class="mt-6">
-        Go to dashboard
-      </Button>
+
+      <div class="flex gap-2 mt-6">
+        <Button @click="router.back()" class="" variant="secondary"> Go back </Button>
+
+        <Button @click="goToDashboard" class=""> Go to dashboard </Button>
+      </div>
     </div>
   </div>
 </template>
@@ -30,19 +35,19 @@ function goToDashboard() {
   // Redirect based on user role
   const userType = authStore.user?.user_type;
   console.log(`404 page - Redirecting user with role ${userType} to dashboard`);
-  
+
   switch (userType) {
     case "superadmin":
       router.push("/superadmin/dashboard");
       break;
-    case "admin":
-      router.push("/admin/dashboard");
+    case "studio":
+      router.push("/studio/home");
       break;
-    case "manager":
-      router.push("/manager/home");
+    case "photographer":
+      router.push("/photographer/home");
       break;
-    case "user":
-      router.push("/user/home");
+    case "affiliate":
+      router.push("/affiliate/home");
       break;
     default:
       router.push("/login");
@@ -56,7 +61,8 @@ function goToDashboard() {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -69,11 +75,12 @@ function goToDashboard() {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
     opacity: 0.5;
   }
 }
-</style> 
+</style>

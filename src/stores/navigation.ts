@@ -14,7 +14,6 @@ import {
   Mail,
   BookOpen,
   FileText,
-  LucideIcon,
   Code,
   Info,
   Menu,
@@ -23,6 +22,8 @@ import {
   SearchCode,
   Activity,
   FileCode,
+  FolderKanban,
+  Calendar,
 } from "lucide-vue-next";
 
 /**
@@ -63,7 +64,7 @@ export const useNavigationStore = defineStore("navigation", () => {
           url: "/superadmin/dashboard",
           icon: LayoutDashboard,
           isActive: false,
-        }
+        },
       ],
     },
     {
@@ -86,8 +87,8 @@ export const useNavigationStore = defineStore("navigation", () => {
               url: "/superadmin/roles",
               icon: Shield,
               isActive: false,
-            }
-          ]
+            },
+          ],
         },
         {
           title: "Navigation Editor",
@@ -154,15 +155,15 @@ export const useNavigationStore = defineStore("navigation", () => {
               url: "/superadmin/dev-tools/env",
               icon: FileCode,
               isActive: false,
-            }
-          ]
+            },
+          ],
         },
         {
           title: "Logs & Activity",
           url: "/superadmin/logs",
           icon: Activity,
           isActive: false,
-        }
+        },
       ],
     },
     {
@@ -179,53 +180,108 @@ export const useNavigationStore = defineStore("navigation", () => {
           url: "/about",
           icon: Info,
           isActive: false,
-        }
-      ],
-    }
-  ];
-
-  /**
-   * Admin navigation menu structure
-   */
-  const adminNavigation: NavigationGroup[] = [
-    {
-      title: "Main",
-      menu: [
-        {
-          title: "Home",
-          url: "/admin/home",
-          icon: LayoutDashboard,
-          isActive: true,
         },
-        {
-          title: "About",
-          url: "/about",
-          icon: Info,
-          isActive: false,
-        }
       ],
     },
   ];
 
-  /**
-   * User navigation menu structure
-   */
-  const userNavigation: NavigationGroup[] = [
+  const studioNavigation: NavigationGroup[] = [
     {
       title: "Main",
       menu: [
         {
           title: "Home",
-          url: "/user/home",
+          url: "/studio/home",
           icon: LayoutDashboard,
           isActive: true,
         },
         {
-          title: "About",
-          url: "/about",
-          icon: Info,
-          isActive: false,
-        }
+          title: "Projects",
+          url: "/studio/projects",
+          icon: FolderKanban,
+          isActive: true,
+        },
+        {
+          title: "Forms",
+          url: "/studio/forms",
+          icon: FileText,
+          isActive: true,
+        },
+        {
+          title: "Contacts",
+          url: "/studio/contacts",
+          icon: Users,
+          isActive: true,
+        },
+        {
+          title: "Affiliates",
+          url: "/studio/affiliates",
+          icon: Users,
+          isActive: true,
+        },
+        {
+          title: "Photographers",
+          url: "/studio/photographers",
+          icon: Users,
+          isActive: true,
+        },
+      ],
+    },
+    {
+      title: "Other",
+      menu: [
+        {
+          title: "Sessions",
+          url: "/studio/sessions",
+          icon: Database,
+          isActive: true,
+        },
+        {
+          title: "Add Ons",
+          url: "/studio/addons",
+          icon: Database,
+          isActive: true,
+        },
+        {
+          title: "Calendar",
+          url: "/studio/calendar",
+          icon: Calendar,
+          isActive: true,
+        },
+        {
+          title: "Settings",
+          url: "/studio/settings",
+          icon: Settings,
+          isActive: true,
+        },
+      ],
+    },
+  ];
+
+  const photographerNavigation: NavigationGroup[] = [
+    {
+      title: "Main",
+      menu: [
+        {
+          title: "Home",
+          url: "/photographer/home",
+          icon: LayoutDashboard,
+          isActive: true,
+        },
+      ],
+    },
+  ];
+
+  const affiliateNavigation: NavigationGroup[] = [
+    {
+      title: "Main",
+      menu: [
+        {
+          title: "Home",
+          url: "/affiliate/home",
+          icon: LayoutDashboard,
+          isActive: true,
+        },
       ],
     },
   ];
@@ -239,10 +295,12 @@ export const useNavigationStore = defineStore("navigation", () => {
     switch (userType) {
       case "superadmin":
         return superadminNavigation;
-      case "admin":
-        return adminNavigation;
-      case "user":
-        return userNavigation;
+      case "studio":
+        return studioNavigation;
+      case "photographer":
+        return photographerNavigation;
+      case "affiliate":
+        return affiliateNavigation;
       default:
         return [];
     }

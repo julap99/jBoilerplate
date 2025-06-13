@@ -1,46 +1,46 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from "vue-router";
 
 // Define the valid layout types
-type LayoutType = 'dashboard' | 'blank' | 'forms' | 'auth';
+type LayoutType = "dashboard" | "blank" | "forms";
 
 export const authRoutes: RouteRecordRaw[] = [
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/pages/login.vue'),
+    path: "/login",
+    name: "login",
+    component: () => import("@/pages/login.vue"),
     meta: {
       requiresAuth: false,
-      layout: 'auth' as LayoutType,
-      title: 'Login'
-    }
+      layout: "auth" as LayoutType,
+      title: "Login",
+    },
   },
   // Force a secondary login route to avoid potential caching issues
   {
-    path: '/signin',
-    redirect: '/login',
+    path: "/signin",
+    redirect: "/login",
     meta: {
       requiresAuth: false,
-      title: 'Sign In'
-    }
+      title: "Sign In",
+    },
   },
   {
-    path: '/register',
-    name: 'register',
-    component: () => import('@/pages/register.vue'),
+    path: "/register",
+    name: "register",
+    component: () => import("@/pages/register.vue"),
     meta: {
       requiresAuth: false,
-      layout: 'auth' as LayoutType,
-      title: 'Register'
-    }
+      layout: "auth" as LayoutType,
+      title: "Register",
+    },
   },
   {
-    path: '/forgot-password',
-    name: 'forgot-password',
-    component: () => import('@/pages/forgot-password.vue'),
+    path: "/forgot-password",
+    name: "forgot-password",
+    component: () => import("@/pages/forgot-password.vue"),
     meta: {
       requiresAuth: false,
-      layout: 'auth' as LayoutType,
-      title: 'Forgot Password'
-    }
-  }
-]; 
+      layout: "auth" as LayoutType,
+      title: "Forgot Password",
+    },
+  },
+];
